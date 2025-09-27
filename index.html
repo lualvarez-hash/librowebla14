@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Jardín de las Palabras - 5to Grado</title>
+    <style>
+        /* Paleta de colores cálida y amigable para un libro digital */
+        :root {
+            --color-fondo-papel: #fefcf3; /* Blanco roto, como papel */
+            --color-fondo-pagina: #e9eff5; /* Azul muy claro, toque moderno */
+            --color-primario: #3b5998; /* Azul escolar, principal */
+            --color-secundario: #f7a300; /* Naranja/Amarillo vibrante, acento */
+            --color-texto: #333333;
+            --sombra-pagina: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-fondo-pagina);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--color-primario);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: var(--sombra-pagina);
+            width: 90%;
+            max-width: 800px;
+        }
+        
+        header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+        }
+        header p {
+            margin: 5px 0 0 0;
+            font-style: italic;
+        }
+
+        /* Contenedor del "Libro" */
+        .libro {
+            width: 90%;
+            max-width: 900px;
+            min-height: 550px;
+            background-color: var(--color-fondo-papel);
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            display: flex;
+            padding: 20px;
+        }
+        
+        /* Estilos generales de las páginas */
+        .pagina {
+            width: 100%;
+            padding: 20px;
+            transition: opacity 0.4s ease;
+        }
+
+        .oculto {
+            display: none;
+        }
+
+        /* Estilos del Índice (Menú de Navegación) */
+        #indice-botones {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            padding: 20px 0;
+        }
+
+        .indice-btn {
+            background-color: var(--color-secundario);
+            color: white;
+            padding: 18px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            text-align: left;
+            transition: background-color 0.2s, transform 0.1s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1rem;
+            line-height: 1.2;
+        }
+
+        .indice-btn:hover {
+            background-color: #e59300;
+            transform: translateY(-2px);
+        }
+
+        .instruccion {
+            text-align: center;
+            color: var(--color-primario);
+            font-weight: 600;
+            margin-top: 20px;
+        }
+
+        /* Estilos de la Vista de Poesía */
+        .pagina-poesia {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .contenido-flexible {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            flex-grow: 1;
+        }
+
+        .poesia-cuerpo {
+            flex: 1 1 45%; /* Toma casi la mitad del espacio */
+            padding-right: 15px;
+            border-right: 1px solid #ccc;
+        }
+        
+        @media (max-width: 768px) {
+            .poesia-cuerpo {
+                flex: 1 1 100%; /* Toma todo el ancho en móvil */
+                border-right: none;
+                padding-right: 0;
+            }
+        }
+
+        #poesia-titulo {
+            color: var(--color-primario);
+            font-size: 1.8rem;
+            margin-top: 0;
+            margin-bottom: 10px;
+            border-bottom: 2px solid var(--color-secundario);
+            padding-bottom: 5px;
+        }
+
+        /* Pre tag para mantener el formato original del texto */
+        #poesia-texto {
+            white-space: pre-wrap; 
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: var(--color-texto);
+            font-family: Georgia, serif; /* Fuente de lectura */
+            margin: 0;
+        }
+
+        .poesia-autor {
+            font-style: italic;
+            color: #666;
+            margin-top: 15px;
+            font-weight: 500;
+            font-size: 1.05em;
+        }
+
+        .poesia-dibujo {
+            flex: 1 1 45%; /* Toma casi la otra mitad */
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #dibujo-imagen {
+            max-width: 100%;
+            height: auto;
+            max-height: 400px;
+            border: 5px solid var(--color-secundario);
+            border-radius: 8px;
+            object-fit: contain;
+            box-shadow: var(--sombra-pagina);
+        }
+
+        .volver-boton {
+            background-color: var(--color-primario);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            width: 100%;
+            max-width: 200px; /* Tamaño fijo en escritorio */
+            align-self: flex-start; /* Se alinea a la izquierda en vista de libro */
+            transition: background-color 0.2s;
+        }
+        
+        @media (max-width: 768px) {
+            .volver-boton {
+                width: 100%;
+                max-width: none;
+                align-self: stretch; /* Se estira en móvil */
+                margin-top: 15px;
+            }
+        }
+
+
+        .volver-boton:hover {
+            background-color: #2e4a80;
+        }
+        
+        footer {
+            margin-top: 30px;
+            font-size: 0.85em;
+            color: #666;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>El Jardín de las Palabras</h1>
+        <p>Libro Web de Poesías de 5to Grado</p>
+    </header>
+
+    <main class="libro">
+        <!-- PÁGINA DE NAVEGACIÓN (ÍNDICE) -->
+        <div id="indice-container" class="pagina">
+            <h2>Selecciona un título:</h2>
+            <div id="indice-botones">
+                <p>Cargando poesías...</p>
+            </div>
+            <p class="instruccion">¡Descubre las creaciones de nuestros jóvenes autores!</p>
+        </div>
+
+        <!-- CONTENEDOR DE LA POESÍA INDIVIDUAL -->
+        <div id="poesia-container" class="pagina pagina-poesia oculto">
+            <button class="volver-boton" onclick="mostrarIndice()">&#x2190; Volver al Índice</button>
+            
+            <div class="contenido-flexible">
+                <div class="poesia-cuerpo">
+                    <h3 id="poesia-titulo">Título de la Poesía</h3>
+                    <pre id="poesia-texto">Cargando el texto...</pre>
+                    <p class="poesia-autor">Autor/a: <span id="poesia-nombre"></span></p>
+                </div>
+                
+                <div class="poesia-dibujo">
+                    <img id="dibujo-imagen" src="" alt="Dibujo del alumno">
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Proyecto de Alfabetizaciones Múltiples y Creación de Contenido Digital.</p>
+    </footer>
+
+    <script>
+        // LÓGICA DE PROGRAMACIÓN (PENSAMIENTO COMPUTACIONAL)
+        
+        // 1. ESTRUCTURA DE DATOS (El Array 'poesias')
+        // *************************************************************************
+        // ** TAREA CLAVE: REEMPLAZA ESTOS DATOS DE EJEMPLO POR LOS DE TUS ALUMNOS **
+        // *************************************************************************
+        const poesias = [
+            { id: 1, titulo: "El Viaje del Cohete", autor: "Martina S.", archivoPoesia: "contenido/01_poesia.txt", archivoDibujo: "contenido/01_dibujo.jpg" },
+            { id: 2, titulo: "Nubes de Algodón", autor: "Lucas P.", archivoPoesia: "contenido/02_poesia.txt", archivoDibujo: "contenido/02_dibujo.jpg" },
+            { id: 3, titulo: "El Misterio del Bosque", autor: "Sofía M.", archivoPoesia: "contenido/03_poesia.txt", archivoDibujo: "contenido/03_dibujo.jpg" },
+            // AÑADE AQUÍ EL RESTO DE LAS POESÍAS, ASEGURANDO QUE LOS ARCHIVOS EXISTAN
+            // EN LA CARPETA LLAMADA "contenido"
+        ];
+
+        // 2. ELEMENTOS DEL DOM (Variables para acceder a la interfaz)
+        const indiceContainer = document.getElementById('indice-container');
+        const poesiaContainer = document.getElementById('poesia-container');
+        const indiceBotones = document.getElementById('indice-botones');
+        const poesiaTitulo = document.getElementById('poesia-titulo');
+        const poesiaTexto = document.getElementById('poesia-texto');
+        const poesiaNombre = document.getElementById('poesia-nombre');
+        const dibujoImagen = document.getElementById('dibujo-imagen');
+
+        // 3. FUNCIÓN DE INICIO (Carga el Menú)
+        function cargarIndice() {
+            indiceBotones.innerHTML = ''; // Limpia el contenido inicial
+            
+            // Bucle 'forEach': Itera sobre cada elemento del array 'poesias'
+            poesias.forEach(poesia => {
+                const boton = document.createElement('button');
+                boton.className = 'indice-btn';
+                boton.textContent = `${poesia.titulo} - por ${poesia.autor}`;
+                
+                // Asignar el evento 'click' al botón. Esto es la 'instrucción'
+                // que se ejecuta cuando se presiona, similar a un bloque 'al presionar'
+                boton.onclick = () => mostrarPoesia(poesia); 
+                
+                indiceBotones.appendChild(boton);
+            });
+        }
+
+        // 4. FUNCIÓN PARA MOSTRAR LA POESÍA (Lógica Condicional y de Acceso a Datos)
+        async function mostrarPoesia(poesia) {
+            // Ocultar/Mostrar (Bloque 'Ocultar' y 'Mostrar' de Scratch)
+            indiceContainer.classList.add('oculto');
+            poesiaContainer.classList.remove('oculto');
+            
+            // 4.1. Cargar metadatos
+            poesiaTitulo.textContent = poesia.titulo;
+            poesiaNombre.textContent = poesia.autor;
+            dibujoImagen.src = poesia.archivoDibujo; // La imagen se carga inmediatamente
+            
+            // 4.2. Cargar el texto desde el archivo .txt (FETCH)
+            try {
+                // Fetch es como 'pedir' un recurso externo (el archivo TXT)
+                const response = await fetch(poesia.archivoPoesia);
+                if (!response.ok) {
+                    throw new Error(`No se pudo cargar el archivo: ${response.statusText}`);
+                }
+                const data = await response.text();
+                poesiaTexto.textContent = data; // Inserta el texto manteniendo el formato (pre-wrap)
+
+            } catch (error) {
+                // Manejo de errores (similar al bloque 'si...entonces' con condición de error)
+                poesiaTexto.textContent = `Error al cargar la poesía. Asegúrate de que el archivo "${poesia.archivoPoesia}" exista en la carpeta /contenido/.`;
+                console.error('Error cargando la poesía:', error);
+            }
+        }
+
+        // 5. FUNCIÓN PARA VOLVER AL ÍNDICE
+        function mostrarIndice() {
+            // Intercambio de visibilidad
+            poesiaContainer.classList.add('oculto');
+            indiceContainer.classList.remove('oculto');
+        }
+
+        // INICIO DEL PROGRAMA: Carga el índice cuando la página está lista.
+        document.addEventListener('DOMContentLoaded', cargarIndice);
+    </script>
+</body>
+</html>
